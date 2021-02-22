@@ -1,39 +1,52 @@
 {
   "project_info": {
-    "project_number": "347976604232",
-    "firebase_url": "https://flutterchatdemo.firebaseio.com",
-    "project_id": "flutterchatdemo",
-    "storage_bucket": "flutterchatdemo.appspot.com"
+    "project_number": "712461799068",
+    "project_id": "chat-1c267",
+    "storage_bucket": "chat-1c267.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:347976604232:android:5e864cb592d93aaa",
+        "mobilesdk_app_id": "1:712461799068:android:2e8a4a0103080f13db6759",
         "android_client_info": {
-          "package_name": "com.dfa.flutterchatdemo"
+          "package_name": "it.chat.demo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "347976604232-k6p3475tsg23qhdgtdjqlb952udl5p9g.apps.googleusercontent.com",
+          "client_id": "712461799068-1pn4mrdc2i1gakaa3cvfbit3g3os6pjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.chat.demo",
+            "certificate_hash": "b86c399d484b1f91942ef2d7aecd25c0a094c092"
+          }
+        },
+        {
+          "client_id": "712461799068-o4r0a9u6ct9h8suis2f61sjbaqm4f20q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.chat.demo",
+            "certificate_hash": "416147137a8e4a5437733bfea24a95f5aea20c95"
+          }
+        },
+        {
+          "client_id": "712461799068-5ga21ish4djidsju7908evc70ko5ujpi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBoAoZZDb5Mzf8C8WUU6r9WHZvFWmusGN8"
+          "current_key": "AIzaSyCh7hrpFchSlaFXC7wFU9wUZwSveONwAhM"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712461799068-5ga21ish4djidsju7908evc70ko5ujpi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

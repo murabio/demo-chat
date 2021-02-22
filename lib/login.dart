@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_demo/const.dart';
 import 'package:flutter_chat_demo/home.dart';
@@ -92,7 +91,8 @@ class LoginScreenState extends State<LoginScreen> {
           'photoUrl': firebaseUser.photoURL,
           'id': firebaseUser.uid,
           'createdAt': DateTime.now().millisecondsSinceEpoch.toString(),
-          'chattingWith': null
+          'chattingWith': null,
+          'human': true
         });
 
         // Write data to local

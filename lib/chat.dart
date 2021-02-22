@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,12 +13,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
+import 'dart:convert' show utf8;
 
 class Chat extends StatelessWidget {
   final String peerId;
   final String peerAvatar;
+  final bool isHuman;
 
-  Chat({Key key, @required this.peerId, @required this.peerAvatar})
+  Chat({Key key, @required this.peerId, @required this.peerAvatar, @required this.isHuman})
       : super(key: key);
 
   @override
@@ -33,6 +38,7 @@ class Chat extends StatelessWidget {
       body: ChatScreen(
         peerId: peerId,
         peerAvatar: peerAvatar,
+        isHuman: isHuman,
       ),
     );
   }
@@ -41,20 +47,22 @@ class Chat extends StatelessWidget {
 class ChatScreen extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
+  final bool isHuman;
 
-  ChatScreen({Key key, @required this.peerId, @required this.peerAvatar})
+  ChatScreen({Key key, @required this.peerId, @required this.peerAvatar,  @required this.isHuman})
       : super(key: key);
 
   @override
   State createState() =>
-      ChatScreenState(peerId: peerId, peerAvatar: peerAvatar);
+      ChatScreenState(peerId: peerId, peerAvatar: peerAvatar, isHuman: isHuman);
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  ChatScreenState({Key key, @required this.peerId, @required this.peerAvatar});
+  ChatScreenState({Key key, @required this.peerId, @required this.peerAvatar,  @required this.isHuman});
 
   String peerId;
   String peerAvatar;
+  bool isHuman;
   String id;
 
   List<QueryDocumentSnapshot> listMessage = new List.from([]);
@@ -206,6 +214,55 @@ class ChatScreenState extends State<ChatScreen> {
           backgroundColor: Colors.black,
           textColor: Colors.red);
     }
+    if (!isHuman) {
+      sendBotMessage(content);
+    }
+  }
+
+  void sendBotMessageToFirebase(String text) {
+    // type: 0 = text, 1 = image, 2 = sticker
+      textEditingController.clear();
+
+      var documentReference = FirebaseFirestore.instance
+          .collection('messages')
+          .doc(groupChatId)
+          .collection(groupChatId)
+          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        transaction.set(
+          documentReference,
+          {
+            'idFrom': peerId,
+            'idTo': id,
+            'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+            'content': text,
+            'type': 0
+          },
+        );
+      });
+      listScrollController.animateTo(0.0,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+  }
+
+  void sendBotMessage(String text) async {
+    http.Response resp = await http.post(
+        Uri.https('atgajjsm05.execute-api.eu-west-1.amazonaws.com', 'prod'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, Object>{
+          'NumMedia': 0,
+          'ProfileName': 'yuri',
+          'Body': text,
+          'To': peerId,
+          'From': 'Yuri:'+id,
+          'AccountSid': id,
+        }));
+    final Xml2Json xml2Json = Xml2Json();
+    xml2Json.parse(utf8.decode(resp.bodyBytes));
+    var jsonString = xml2Json.toParker();
+    sendBotMessageToFirebase(jsonDecode(jsonString)["Response"]["Message"]);
   }
 
   Widget buildItem(int index, DocumentSnapshot document) {

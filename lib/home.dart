@@ -97,7 +97,7 @@ class HomeScreenState extends State<HomeScreen> {
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
       Platform.isAndroid
-          ? 'com.dfa.flutterchatdemo'
+          ? 'it.chat.demo'
           : 'com.duytq.flutterchatdemo',
       'Flutter chat demo',
       'your channel description',
@@ -376,6 +376,7 @@ class HomeScreenState extends State<HomeScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Chat(
+                          isHuman: document.data()['human'],
                           peerId: document.id,
                           peerAvatar: document.data()['photoUrl'],
                         )));
